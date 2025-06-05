@@ -1,0 +1,26 @@
+---
+import { getNews } from '../library/microcms';
+const response = await getNews();
+
+const formatDate = (date: string) => {
+  const d = new Date(date);
+  const jstDate = new Date(d.getTime() + (9 * 60 * 60 * 1000)); // UTC→JST変換
+  return jstDate.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+};
+
+---
+
+<ul>
+  {response.contents.map((news) => (
+    <li>
+      <time datetime={news.date}>{formatDate(news.date)}</time>
+      <a href={news.id}>
+        {news.title}
+      </a>
+    </li>
+  ))}
+</ul>
